@@ -1,0 +1,79 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
+    <div class="container px-5">
+      <a class="navbar-brand" href="/view/main.html">
+        <span class="fw-bolder text-primary"> SOLVE IT </span>
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 small fw-bolder">
+          <li class="nav-item">
+            <a class="nav-link" href="/view/professorList.html">교수님들</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../review/reviewList.html">후기</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/view/communityList.html">커뮤니티</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="mypage-link" href="/public/login.html">로그인</a>
+          </li>
+          <li class="nav-item" id="chat-link-container" style="display: none;">
+            <a class="nav-link" href="/view/chat.html">채팅</a>
+          </li>
+        </ul>
+      </div>
+     
+      
+    </div>
+  </nav>
+  <script defer>
+    // MutationObserver 사용
+    document.addEventListener("DOMContentLoaded", function() {
+      const targetNode = document.querySelector('body'); // body 전체를 관찰할 수 있습니다.
+      const observerOptions = {
+        childList: true, // 자식 노드의 변화를 관찰합니다.
+        subtree: true    // 하위 트리의 변화를 모두 관찰합니다.
+      };
+  
+      const observer = new MutationObserver((mutationsList, observer) => {
+        // 헤더의 특정 요소가 존재하는지 확인
+        if (document.getElementById("mypage-link")) {
+          init();
+          observer.disconnect(); // 헤더가 로드되고 나면 더 이상 감시하지 않습니다.
+        }
+      });
+  
+      observer.observe(targetNode, observerOptions);
+    });
+  
+    function init() {
+      const userId = getCookie("user_id");
+      const mypageLink = document.getElementById("mypage-link");
+      const chatLinkContainer = document.getElementById("chat-link-container");
+  
+      if (userId) {
+        mypageLink.href = "/public/mypage.html";
+        mypageLink.textContent = "마이페이지";
+        chatLinkContainer.style.display = "block";
+      } else {
+        console.log("user_id 없음");
+      }
+    }
+  
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+  </script>
